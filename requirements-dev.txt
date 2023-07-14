@@ -1,0 +1,5 @@
+gradio
+docx2txt
+pdf2docx
+openai
+tiktoken
