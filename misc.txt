@@ -5,8 +5,10 @@ Steps:
 4) Push
 5) Github Release
 6) PyPi release 
-    Build pypi package cmd:
-    >> python setup.py bdist_wheel -d .
-    Publish pypi package cmd:
     >> pipenv shell
-    >> twine upload venture-ai-0.9.0-py3-none-any.whl
+    Build pypi package cmd:
+    >> python setup.py bdist_wheel sdist
+    Check it:
+    >> twine check dist/*
+    Publish pypi package to test:
+    >> twine upload -r testpypi dist/*

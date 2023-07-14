@@ -83,7 +83,7 @@ class Venture:
         #--------------[EXPLORE]--------------#
 
         # EXPLORE HEADER
-        self.gr_explore_media = gr.Markdown("""![](https://raw.githubusercontent.com/RoySadaka/ReposMedia/main/venture/media/explore.png)""")
+        self.gr_explore_media = gr.Markdown("""![](https://raw.githubusercontent.com/RoySadaka/ReposMedia/main/venture/app/explore.png)""")
         self.gr_elements.append(self.gr_explore_media)
 
         ## QUESTION
@@ -105,7 +105,7 @@ class Venture:
         #--------------[INTERLINK]--------------#
 
         # INTERLINK HEADER
-        self.gr_interlink_media = gr.Markdown(f"""![](https://raw.githubusercontent.com/RoySadaka/ReposMedia/main/venture/media/interlink.png)""")
+        self.gr_interlink_media = gr.Markdown(f"""![](https://raw.githubusercontent.com/RoySadaka/ReposMedia/main/venture/app/interlink.png)""")
         self.gr_elements.append(self.gr_interlink_media)
         
         self.gr_interlink_textbox = gr.Textbox(label='📡 Interlink', placeholder="Galactic aid at your service", lines=10, interactive=True, visible=True)
@@ -117,7 +117,7 @@ class Venture:
         #--------------[COSMOS]--------------#
 
         # COSMOS HEADER
-        self.gr_cosmos_media = gr.Markdown(f"""![](https://raw.githubusercontent.com/RoySadaka/ReposMedia/main/venture/media/cosmos.png)""")
+        self.gr_cosmos_media = gr.Markdown(f"""![](https://raw.githubusercontent.com/RoySadaka/ReposMedia/main/venture/app/cosmos.png)""")
         self.gr_elements.append(self.gr_cosmos_media)
 
         # COSMOS FILE UPLOAD
@@ -139,7 +139,7 @@ class Venture:
         #--------------[CODEX]--------------#
 
         # CODEX HEADER
-        self.gr_codex_media = gr.Markdown(f"""![](https://raw.githubusercontent.com/RoySadaka/ReposMedia/main/venture/media/codex.png)""")
+        self.gr_codex_media = gr.Markdown(f"""![](https://raw.githubusercontent.com/RoySadaka/ReposMedia/main/venture/app/codex.png)""")
         self.gr_elements.append(self.gr_codex_media)
 
         # CODEX SEND BUTTON
