@@ -1,4 +1,4 @@
-# Venture ✨ 🧑‍🚀 ✨
+# Venture ✨ 🧑‍🚀 ✨ (STILL WIP! KINDLY WAIT TILL WE WRAP THINGS UP, pip NOT YET PUBLISHED)
 
 ![](https://raw.githubusercontent.com/RoySadaka/ReposMedia/main/venture/readme/banner.jpg)
 
@@ -86,15 +86,13 @@ By leveraging the reasoning capabilities of ChatGPT, Venture performs a ChatGPT 
 ### 🛑 Limitation:
 The current version of Reasoning-Based Search in ``Venture`` supports up to approximately 70 documents.  
 However, we are actively working on the next version, which will enable support for hundreds of documents in search.  
-Our plan involves creating a tree structure for search, which will require O(log n) ChatGPT calls, with 'n' representing the number of documents.  
-Or, ~3 calls for ~1000 docs to conclude a single search.
+More details soon.
 
 ### 🤔 Why not use embeddings?
 While we highly appreciate the usefulness of embeddings, they have certain limitations.  
 Embedding-based searches struggle with limited context for short texts and tend to be too noisy for long texts.  
-Additionally, embeddings do not provide a clear indication when no relevant results are found.  
-Although techniques like thresholds and metadata enhancements can assist, our (humble) research has shown that Reasoning-Based Search,  
-powered by a robust language model like ChatGPT, outperforms these approaches.
+Additionally, Embedding-based search does not provide a clear indication when no relevant results are found.  
+Although techniques like thresholds and metadata enhancements can assist, our (humble) research has shown that Reasoning-Based Search, powered by a robust language model like ChatGPT, is a superior searching approach that finds the most relevant docs.
 
 ---
 
