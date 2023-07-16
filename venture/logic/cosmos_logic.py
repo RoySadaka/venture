@@ -28,10 +28,10 @@ def index_cosmos__read_file(file_path:str, file_type:FileType):
         temp_file_name = str(uuid.uuid4()) + '.docx'
         with open(file_path) as pdf:
             cv = Converter(pdf)      
-            cv.convert(Config.INDEX_PATH+temp_file_name)
+            cv.convert(casual_utils.get_index_path()+temp_file_name)
             cv.close()
-            text = docx2txt.process(Config.INDEX_PATH+temp_file_name)
-            casual_utils.delete_file(Config.INDEX_PATH+temp_file_name)
+            text = docx2txt.process(casual_utils.get_index_path()+temp_file_name)
+            casual_utils.delete_file(casual_utils.get_index_path()+temp_file_name)
             return text
     elif file_type == FileType.TXT.value:
         text = casual_utils.read_text_from_file(file_path)
@@ -80,7 +80,7 @@ def index_cosmos_parse_delta(metadata:Metadata, file_name_add_to_file_type: Dict
     file_name_to_parsed_doc = metadata.file_name_to_parsed_doc
     all_hashes = {parsed_doc.hash for parsed_doc in file_name_to_parsed_doc.values()}
     file_name_to_result = dict()
-    for file_path in casual_utils.loop_file_names_in_directory(Config.DOCUMENTATION_PATH):
+    for file_path in casual_utils.loop_file_names_in_directory(casual_utils.get_parsed_files_path()):
         file_name = casual_utils.doc_name_from_file_path(file_path)
 
         if file_name not in file_name_add_to_file_type:
@@ -124,7 +124,7 @@ def index_cosmos_parse_delta(metadata:Metadata, file_name_add_to_file_type: Dict
                                contact_details=contact_details)
         file_name_to_parsed_doc[file_name] = parsed_doc
         parsed_doc_as_json_str = json.dumps(parsed_doc.to_json(), ensure_ascii=False)
-        casual_utils.write_text_to_file(parsed_doc_as_json_str, Config.INDEX_PATH+file_name)
+        casual_utils.write_text_to_file(parsed_doc_as_json_str, casual_utils.get_index_path()+file_name)
         file_name_to_result[file_name] = ParseResult.SUCCESS_ADD
 
     return file_name_to_result
@@ -148,14 +148,14 @@ def add_new_file_to_cosmos(source_path):
     except:
         return file_name, file_type, False
 
-    casual_utils.copyfile(source_path, Config.DOCUMENTATION_PATH+file_name)
+    casual_utils.copyfile(source_path, casual_utils.get_parsed_files_path()+file_name)
     return file_name, file_type, True
 
 def remove_file_from_cosmos(file_name:str, file_name_to_parsed_doc:Dict[str,ParsedDoc]):
     time.sleep(1) # OTHERWISE THE UI REFRESH TOO FAST AND IT LOOKS LIKE NOTHING HAPPENED
-    casual_utils.delete_file(Config.DOCUMENTATION_PATH+file_name)
-    was_deleted = casual_utils.file_exists(Config.INDEX_PATH+file_name)
-    casual_utils.delete_file(Config.INDEX_PATH+file_name)
+    casual_utils.delete_file(casual_utils.get_parsed_files_path()+file_name)
+    was_deleted = casual_utils.file_exists(casual_utils.get_index_path()+file_name)
+    casual_utils.delete_file(casual_utils.get_index_path()+file_name)
     file_name_to_parsed_doc.pop(file_name,None)
     return was_deleted
 

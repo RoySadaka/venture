@@ -26,8 +26,9 @@ class Config:
     CASUAL_DETAILS_TEMPLATE     = '<br><br><br><br><br><sub><sup><span style="color:black">{}</span></sup></sub>'
 
     # FILES
-    DOCUMENTATION_PATH          = './venture/documentation/'
-    INDEX_PATH                  = './venture/index/'
+    DATA_PATH                   = './venture/cosmos_data/'
+    PARSED_FILES_PATH           = './parsed_files/'
+    INDEX_PATH                  = './index/'
 
     # PROMPTS
     VENTURE_UI_DESCRIPTION = """Venture, Your operational environment is a User Interface (UI) that is segmented into the following tabs:

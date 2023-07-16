@@ -11,7 +11,7 @@ import copy
 
 def load_all_docs() -> Dict[str,ParsedDoc]:
     file_name_to_parsed_doc = dict()
-    for file_path in casual_utils.loop_file_names_in_directory(Config.INDEX_PATH):
+    for file_path in casual_utils.loop_file_names_in_directory(casual_utils.get_index_path()):
         json_str = casual_utils.read_text_from_file(file_path)
         json_obj = json.loads(json_str)
         parsed_doc = ParsedDoc.from_json(json_obj)

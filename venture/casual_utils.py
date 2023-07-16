@@ -16,6 +16,12 @@ def get_casual_details(metadata:Metadata):
 # -------------- [FILES] -------------- #
 
 
+def get_parsed_files_path():
+    return Config.DATA_PATH + Config.PARSED_FILES_PATH
+
+def get_index_path():
+    return Config.DATA_PATH + Config.INDEX_PATH
+
 def write_text_to_file(text, path):
     text_file = open(path, "w")
     text_file.write(text)

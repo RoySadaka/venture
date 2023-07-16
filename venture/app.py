@@ -1,15 +1,31 @@
 import venture.casual_utils as casual_utils 
 from venture.metadata import Metadata
 from venture.config import Config
+from typing import Optional
 import venture.logic as lo
 import gradio as gr
 import openai
 
 class Venture:
-    def __init__(self, openai_api_key:str, captain_email:str='', extra_role:str='', share:bool=False):
+    """
+    Initialize the Venture application.
+
+    Args:
+        openai_api_key (str): The API key for OpenAI, required to interact with the ChatGPT language model.
+        captain_email (str, optional): The default email address for the interlink tab. It is used as a contact email.
+        extra_role (str, optional): Additional information about the specific use case. This information is added to the ChatGPT prompt.
+        cosmos_path (str, optional): The path to store the added documents and internal indexing. If not provided, a default path is used.
+        share (bool, optional): A flag indicating whether to share the application link outside of the internal network.
+    """
+
+    def __init__(self, openai_api_key:str, captain_email:Optional[str]='', extra_role:Optional[str]='', cosmos_path:Optional[str]=None, share:Optional[bool]=False):
         Config.OPEN_AI_KEY = openai_api_key
         Config.CAPTAIN_EMAIL = captain_email
         Config.EXTRA_ROLE = extra_role
+        if cosmos_path is None:
+            print('\n[Warning] - using default cosmos path, parsed data will be lost if the machine instance is temporary\n')
+        else:
+            Config.DATA_PATH =  cosmos_path
         self.share = share
 
     metadata: Metadata = Metadata()
@@ -58,8 +74,8 @@ class Venture:
         openai.api_key = Config.OPEN_AI_KEY
         self.gr_elements = []
 
-        casual_utils.ensure_folder_created(Config.DOCUMENTATION_PATH)
-        casual_utils.ensure_folder_created(Config.INDEX_PATH)
+        casual_utils.ensure_folder_created(casual_utils.get_parsed_files_path())
+        casual_utils.ensure_folder_created(casual_utils.get_index_path())
 
         lo.load_initial_metadata(self.metadata)
         self.metadata.sum_cost_in_since_start_session    = 0
