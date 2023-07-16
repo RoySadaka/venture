@@ -34,6 +34,7 @@ if __name__ == '__main__':
     v = Venture(openai_api_key='sk-...',  # OBTAINED FROM https://platform.openai.com/account/api-keys
                 captain_email='captain@spaceship.com',  # THE DEFAULT CONTACT IN INTERLINK TAB 
                 extra_role='You are an AI assistant for Venture Company.', # ANY INFO ABOUT YOUR SPECIFIC USE CASE
+                cosmos_path='/Users/captain/Documents/MyVenture/', # THE PATH TO STORE THE PARSED DOCUMENTS AND INTERNAL INDEXING
                 share=False) # FOR SHARING THE APP LINK OUTSIDE YOUR LOCAL NETWORK
     v.launch()
 ```
