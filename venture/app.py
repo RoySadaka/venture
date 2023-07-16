@@ -1,9 +1,8 @@
-from venture.config import Config
+import venture.casual_utils as casual_utils 
 from venture.metadata import Metadata
-import gradio as gr
 from venture.config import Config
 import venture.logic as lo
-import venture.casual_utils as casual_utils 
+import gradio as gr
 import openai
 
 class Venture:

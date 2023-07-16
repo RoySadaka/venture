@@ -77,22 +77,39 @@ Prepare to embark on a cosmic journey through its three celestial tabs, each des
 ## 🔍 Reasoning Based Search
 When using 'Auto-Pilot' mode in 📌 Cosmos, ``Venture`` performs a document search.  
 Its goal is to find the most suitable document for the user's query.  
-Instead of relying on traditional search techniques, Venture employs a novel approach.
+Instead of relying on traditional search techniques, ``Venture`` employs a novel approach.
 
 For each document added to the ``Cosmos``, metadata such as file name, summary, and owner is extracted.  
 Venture then utilizes the 'function call' feature of ChatGPT to generate dynamic functions based on this metadata.  
-By leveraging the reasoning capabilities of ChatGPT, Venture performs a ChatGPT 'function call' with all the docs metadata.
+By leveraging the reasoning capabilities of ChatGPT, ``Venture`` performs a ChatGPT 'function call' with all the docs metadata.
 
-### 🛑 Limitation:
-The current version of Reasoning-Based Search in ``Venture`` supports up to approximately 70 documents.  
-However, we are actively working on the next version, which will enable support for hundreds of documents in search.  
-More details soon.
+### 🛑 Limitations:
+While ``Venture`` presents a powerful tool for document navigation and search, its current iteration has a few limitations, particularly related to the volume of documents it can effectively handle.
 
-### 🤔 Why not use embeddings?
-While we highly appreciate the usefulness of embeddings, they have certain limitations.  
-Embedding-based searches struggle with limited context for short texts and tend to be too noisy for long texts.  
-Additionally, Embedding-based search does not provide a clear indication when no relevant results are found.  
-Although techniques like thresholds and metadata enhancements can assist, our (humble) research has shown that Reasoning-Based Search, powered by a robust language model like ChatGPT, is a superior searching approach that finds the most relevant docs.
+In its present version, Reasoning Based Search in ``Venture`` can effectively support only up to approximately 300 documents.  
+A ChatGPT function call for this search method will be triggered for every ~70 documents.  
+
+We're investing our efforts in creating the next version of ``Venture``, which will considerably expand the tool's capabilities to handle search across thousands of documents effectively.  
+
+If you're dealing with a greater volume of documents, we recommend segmenting them and creating multiple instances of ``Venture`` where each instance caters to a specific subset of your documents.
+
+
+### 🤔 Why no embeddings?
+While embeddings are amazing, they also carry certain inherent limitations that influenced our decision not to implement them in ``Venture``. 
+
+* **Limited context for short texts:** Embeddings Based Search can struggle with short texts due to the lack of context, leading to potential inaccuracies in the search results.
+
+* **Noisiness for long texts:** conversely, long texts can introduce too much noise in the embeddings, again resulting in less precise matches.
+
+* **Challenges with Antonyms:** Embeddings often conflate words with opposite meanings, like "good" and "bad", that appear in similar contexts, incorrectly positioning them close together in the vector space.
+
+* **Lack of indication for no relevant results:** one major drawback of Embeddings Based Search methods (like cosine or p2 distance) is their inability to signal when no relevant results are found.  
+Though certain techniques like thresholds and metadata enhancements can somewhat ameliorate this issue, the problem remains.
+
+Our (humble) research has led us to the conclusion that a Reasoning Based Search, underpinned by a robust language model like ChatGPT, is more accurate, bypassing the issues raised above.
+
+However, it's important to note that despite its increased accuracy, Reasoning Based Search is much slower than Embeddings Based Search and is not (yet) scalable to thousands of documents in its current form.  
+
 
 ---
 

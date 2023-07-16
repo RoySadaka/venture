@@ -7,7 +7,7 @@ from venture.objects.token_counts import TokenCounts
 
 class Metadata:
     file_name_to_parsed_doc:Dict[str,ParsedDoc] = dict()
-    retrieval_functions = None
+    retrieval_doc_functions = None
     function_name_to_file_name:Dict[str,str] = None
     token_counts: TokenCounts = None
     sum_cost_in_since_start_session:int

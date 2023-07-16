@@ -5,10 +5,11 @@ class ParseResult:
     ALREADY_EXISTS = 'Skipped, already exists'
     TOO_SHORT = 'Skipped, too short'
     TOO_LONG = 'Skipped, too long'
+    UNSUPPORTED_FORMAT = 'Skipped, unsupported file format'
 
     @staticmethod
     def symbol(value):
-        if value == ParseResult.ERROR:
+        if value in {ParseResult.ERROR, ParseResult.UNSUPPORTED_FORMAT}:
             return '🟥'
         if value in {ParseResult.SUCCESS_ADD, ParseResult.SUCCESS_DELETE}:
             return '🟩'

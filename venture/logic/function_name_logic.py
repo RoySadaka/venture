@@ -1,7 +1,7 @@
 import venture.prompts.system_function_name as system_function_name
-import venture.logic.model_selector_logic as mslo
-import venture.logic.token_count_logic as tclo
-import venture.logic.openai_logic as oailo
+import venture.logic.model_selector_logic as model_selector_logic
+import venture.logic.token_count_logic as token_count_logic
+import venture.logic.openai_logic as openai_logic
 from venture.metadata import Metadata
 from venture.config import Config
 import re
@@ -25,12 +25,12 @@ def extract_openai_function_name(metadata:Metadata, file_name:str, file_summary:
         return function_name
     
     # FUNCTION NAME TOO LONG, EXTRACT SHORTER
-    summary_token_count = tclo.count_tokens(file_summary)
-    model_name = mslo.get_model_name_for_function_name_extract(metadata, summary_token_count)
+    summary_token_count = token_count_logic.count_tokens(file_summary)
+    model_name = model_selector_logic.get_model_name_for_function_name_extract(metadata, summary_token_count)
     system_message = system_function_name.SYSTEM_MESSAGE
     user_message = system_function_name.USER_MESSAGE_TEMPLATE.format(file_summary)
     functions = [system_function_name.FILE_NAME_HANDLER]
-    output = oailo.openai_chat_completion(metadata=metadata,
+    output = openai_logic.openai_chat_completion(metadata=metadata,
                                           model_name=model_name,
                                             system=system_message,
                                             user=user_message,

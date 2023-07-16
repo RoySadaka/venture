@@ -1,11 +1,19 @@
-SYSTEM_MESSAGE = """Review the project documentation to search for owner's name and/or contact email address."""
+SYSTEM_MESSAGE = """Examine the project documentation thoroughly, identifying any instances where the owner's name and/or contact email address are mentioned.
+This could require detecting references to terms like 'owner', 'leader', 'project lead', 'contact person', or any other indirectly expressed terms that could imply the presence of a contact individual."""
 
-USER_REMINDER = """\n---\nPlease do not use any knowledge outside the provided documentation.
+USER_MESSAGE = """Project documentation:
+```
+{}
+```
+
+---
+
+Please do not use any knowledge outside the provided documentation.
 Only use the functions you have been provided with.
 It is mandatory for you to select one of the available functions."""
 
 
-EXPLICIT_CONTACTS_DETAILS = 'explicit_contacts_details'
+EXPLICIT_CONTACTS_DETAILS = 'contacts_details'
 
 OWNERSHIP_HANDLER = {
                     "name":"contact_details_in_documentation_handler",
@@ -21,7 +29,7 @@ OWNERSHIP_HANDLER = {
                                 "items": 
                                 {
                                     "type": "string",
-                                    "description": "Explicit project owner name or contact email address written in provided documentation"
+                                    "description": "Representing project owner name or contact email address written in provided documentation"
                                 },
                             },
                         },

@@ -9,9 +9,17 @@ You are tasked with determining the most appropriate function handler to invoke 
 The chosen function handler will then be used to select a document that contains more comprehensive information about the function.
 """
 
-USER_REMINDER = """\n---\nVenture, please do not use any knowledge outside the provided Knowledge Base.
+USER_MESSAGE = """User query:
+```
+{}
+```
+
+---
+
+Venture, please do not use any knowledge outside the provided Knowledge Base.
 Only use the functions you have been provided with.
-It is mandatory for you to select one of the available functions."""
+It is mandatory for you to select a function name that has shown the utmost efficiency in addressing the specified query.
+"""
 
 GREETING_HANDLER = {
                     "name" : "greeting_handler",
@@ -50,8 +58,8 @@ CLARIFICATION_HANDLER = {
                         }
 
 UNKNOWN_TOPIC_HANDLER = {
-                        "name" : "unknown_topic_handler",
-                        "description" : "Handles unknown topics that are not part of any other provided function call topics",
+                        "name" : "unrecognized_query_handler",
+                        "description" : "Handles queries that don't appear to be associated with any other specified function call descriptions",
                         "parameters" : 
                         {
                             "type": "object",
@@ -60,7 +68,7 @@ UNKNOWN_TOPIC_HANDLER = {
                                 "response": 
                                 {
                                     "type": "string",
-                                    "description": "Venture's response to politely handle the unknown query"
+                                    "description": "The response from Venture to politely indicate that it doesn't know how to handle the query"
                                 }
                             },
                             "required": ["response"]
@@ -69,7 +77,7 @@ UNKNOWN_TOPIC_HANDLER = {
 
 VENTURE_TOPIC_HANDLER = {
                         "name":'venture_topic_handler',
-                        "description":Config.VENTURE_UI_DESCRIPTION,
+                        "description":f"Handling for queries about Venture's operational environment.\n{Config.VENTURE_UI_DESCRIPTION}",
                         "parameters":
                         {
                             "type": "object",
@@ -102,12 +110,12 @@ TEMPLATE_TOPIC_HANDLER = {
                             "type": "object",
                             "properties": 
                             {
-                                "response": 
+                                "reasoning": 
                                 {
                                     "type": "string",
-                                    "description": "Venture's response that will indicate that the system will handle the query via the chosen handler"
+                                    "description": "If this document is deemed the most pertinent to the user's query, a brief explanation will be provided as to why it holds that distinction"
                                 }
                             },
-                            "required": ["response"]
+                            "required": ["reasoning"]
                         }
                         }

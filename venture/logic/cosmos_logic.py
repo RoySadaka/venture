@@ -2,11 +2,11 @@ from venture.objects.file_type import FileType
 import venture.prompts.system_ownership as system_ownership
 import venture.prompts.system_summary as system_summary
 from venture.objects.parse_result import ParseResult
-import venture.logic.model_selector_logic as mslo
+import venture.logic.model_selector_logic as model_selector_logic
 from venture.objects.parsed_doc import ParsedDoc
-import venture.logic.token_count_logic as tclo
+import venture.logic.token_count_logic as token_count_logic
 import venture.casual_utils as casual_utils 
-import venture.logic.openai_logic as oailo
+import venture.logic.openai_logic as openai_logic
 import venture.logic.loaders_logic as lolo
 import venture.logic.function_name_logic as fnlo
 from venture.metadata import Metadata
@@ -41,9 +41,9 @@ def index_cosmos__read_file(file_path:str, file_type:FileType):
 
 def index_cosmos__extract_summary_from_doc(metadata:Metadata, file_name_no_suffix:str, doc_as_string: str, processed_doc_token_count:int):
     system_message = system_summary.SYSTEM_MESSAGE
-    model_name = mslo.get_model_name_for_summary_extract(metadata, processed_doc_token_count)
+    model_name = model_selector_logic.get_model_name_for_summary_extract(metadata, processed_doc_token_count)
     user_message = f'Input:\n```\n{doc_as_string}\n```'
-    output = oailo.openai_chat_completion(metadata=metadata,
+    output = openai_logic.openai_chat_completion(metadata=metadata,
                                           model_name=model_name,
                                           system=system_message,
                                           user=user_message).assistant_message_content
@@ -51,10 +51,10 @@ def index_cosmos__extract_summary_from_doc(metadata:Metadata, file_name_no_suffi
 
 def index_cosmos__extract_contact_details_from_doc(metadata:Metadata, doc_as_string: str, processed_doc_token_count:int):
     system_message = system_ownership.SYSTEM_MESSAGE
-    model_name = mslo.get_model_name_for_ownership_extract(metadata, processed_doc_token_count)
-    user_message = f'Input:\n```\n{doc_as_string}\n```\n{system_ownership.USER_REMINDER}'
+    model_name = model_selector_logic.get_model_name_for_ownership_extract(metadata, processed_doc_token_count)
+    user_message = system_ownership.USER_MESSAGE.format(doc_as_string)
     functions = [system_ownership.OWNERSHIP_HANDLER]
-    output = oailo.openai_chat_completion(metadata=metadata,
+    output = openai_logic.openai_chat_completion(metadata=metadata,
                                           model_name=model_name,
                                             system=system_message,
                                             user=user_message,
@@ -76,7 +76,7 @@ def index_cosmos__extract_contact_details_from_doc(metadata:Metadata, doc_as_str
     cd = output.assistant_function_parsed_arguments[system_ownership.EXPLICIT_CONTACTS_DETAILS]
     return cd[0] if isinstance(cd, list) and len(cd) == 1 else str(cd)
 
-def index_cosmos_parse_delta(metadata:Metadata, file_name_add_to_file_type: Dict[str,FileType]):
+def index_cosmos_parse_delta(metadata:Metadata, file_name_add_to_file_type: Dict[str,FileType]) -> Dict[str, ParseResult]:
     file_name_to_parsed_doc = metadata.file_name_to_parsed_doc
     all_hashes = {parsed_doc.hash for parsed_doc in file_name_to_parsed_doc.values()}
     file_name_to_result = dict()
@@ -95,7 +95,7 @@ def index_cosmos_parse_delta(metadata:Metadata, file_name_add_to_file_type: Dict
             file_name_to_result[file_name] = ParseResult.ALREADY_EXISTS
             continue
 
-        processed_doc_token_count = tclo.count_tokens(processed_doc)
+        processed_doc_token_count = token_count_logic.count_tokens(processed_doc)
 
         if processed_doc_token_count < Config.MIN_TOKENS_TO_CONSIDER_DOC:
             file_name_to_result[file_name] = ParseResult.TOO_SHORT
@@ -113,7 +113,7 @@ def index_cosmos_parse_delta(metadata:Metadata, file_name_add_to_file_type: Dict
             continue
 
         all_hashes.add(doc_hash)
-        summary_token_count = tclo.count_tokens(summary)
+        summary_token_count = token_count_logic.count_tokens(summary)
         parsed_doc = ParsedDoc(file_name=file_name,
                                function_name=function_name,
                                content=processed_doc,
@@ -137,7 +137,7 @@ def add_new_file_to_cosmos(source_path):
 
     if '.' not in source_path.split('/')[-1]:
         # CURRENTLY RELYING ON FULL FILE NAME TO RECOGNIZE TYPE 
-        return file_name, file_type, False
+        return file_name, None, False
 
     file_type = source_path.split('.')[-1].lower()
     try:
@@ -184,6 +184,8 @@ def index_cosmos(metadata:Metadata, file_paths_to_upload, file_names_to_delete):
 
     if len(file_name_add_to_file_type) > 0 or len(to_be_deleted) > 0:
         file_name_to_result = index_cosmos_parse_delta(metadata, file_name_add_to_file_type)
+        for skipped_file_name in skipped:
+            file_name_to_result[skipped_file_name] = ParseResult.UNSUPPORTED_FORMAT
         lolo.load_initial_metadata(metadata)
         for file_name in deleted:
             file_name_to_result[file_name] = ParseResult.SUCCESS_DELETE
