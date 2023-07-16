@@ -11,14 +11,17 @@ class Venture:
     Initialize the Venture application.
 
     Args:
-        openai_api_key (str): The API key for OpenAI, required to interact with the ChatGPT language model.
+        openai_api_key (str):   The API key for OpenAI. 
+                                This key is necessary to communicate with the ChatGPT language model. 
+                                If you don't have an API key, you can obtain one from the OpenAI platform at https://platform.openai.com/account/api-keys. 
+                                If you have already set the API key outside of the Venture's application, you can pass `None` as the value for this parameter.
         captain_email (str, optional): The default email address for the interlink tab. It is used as a contact email.
         extra_role (str, optional): Additional information about the specific use case. This information is added to the ChatGPT prompt.
         cosmos_path (str, optional): The path to store the added documents and internal indexing. If not provided, a default path is used.
         share (bool, optional): A flag indicating whether to share the application link outside of the internal network.
     """
 
-    def __init__(self, openai_api_key:str, captain_email:Optional[str]='', extra_role:Optional[str]='', cosmos_path:Optional[str]=None, share:Optional[bool]=False):
+    def __init__(self, openai_api_key:Optional[str]=None, captain_email:Optional[str]='', extra_role:Optional[str]='', cosmos_path:Optional[str]=None, share:Optional[bool]=False):
         Config.OPEN_AI_KEY = openai_api_key
         Config.CAPTAIN_EMAIL = captain_email
         Config.EXTRA_ROLE = extra_role
@@ -71,7 +74,8 @@ class Venture:
         return self.get_all_elements()
 
     def initialize(self):
-        openai.api_key = Config.OPEN_AI_KEY
+        if Config.OPEN_AI_KEY is not None:
+            openai.api_key = Config.OPEN_AI_KEY
         self.gr_elements = []
 
         casual_utils.ensure_folder_created(casual_utils.get_parsed_files_path())

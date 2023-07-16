@@ -1,4 +1,4 @@
-# Venture ✨ 🧑‍🚀 ✨ (STILL WIP! KINDLY WAIT TILL WE WRAP THINGS UP, pip NOT YET PUBLISHED)
+# Venture ✨ 🧑‍🚀 ✨
 
 ![](https://raw.githubusercontent.com/RoySadaka/ReposMedia/main/venture/readme/banner.jpg)
 
