@@ -35,7 +35,7 @@ classifiers=[
 
 setup(
     name='venture-ai',
-    version='0.9.4',
+    version='0.9.5',
     description='A Fast, Flexible Trainer with Callbacks and Extensions for PyTorch',
     long_description_content_type='text/markdown',
     long_description=README_md,
