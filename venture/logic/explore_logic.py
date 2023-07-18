@@ -35,7 +35,7 @@ def get_context_file_names_that_fit_in_window(metadata:Metadata, user_query:str,
 
     minimal_token_count = metadata.token_counts.explore_all_prompt_token_count + \
                             token_count_logic.count_tokens(user_query)
-    minimal_token_count = minimal_token_count * Config.TOKEN_COUNT_MULTIPLIER + Config.RESERVED_RESPONSE_TOKEN_COUNT
+    minimal_token_count = minimal_token_count + Config.RESERVED_RESPONSE_TOKEN_COUNT
     
     left_over_token_count = max_token_count - minimal_token_count
     result = []

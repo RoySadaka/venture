@@ -34,7 +34,7 @@ if __name__ == '__main__':
     v = Venture(openai_api_key='sk-...',  # OBTAINED FROM https://platform.openai.com/account/api-keys
                 captain_email='captain@spaceship.com',  # THE DEFAULT CONTACT IN INTERLINK TAB 
                 extra_role='You are an AI assistant for Venture Company.', # ANY INFO ABOUT YOUR SPECIFIC USE CASE
-                cosmos_path='/Users/captain/Documents/MyVenture/', # THE PATH TO STORE THE PARSED DOCUMENTS AND INTERNAL INDEXING
+                cosmos_path='/Users/captain/Documents/MyVenture/', # Optional, THE PATH TO STORE THE PARSED DOCUMENTS AND INTERNAL INDEXING
                 share=False) # FOR SHARING THE APP LINK OUTSIDE YOUR LOCAL NETWORK
     v.launch()
 ```
@@ -58,16 +58,16 @@ Keep in mind that the mentioned expiration time may vary like distant stars in t
 In the celestial realm of the web app, ``Venture`` unveils its enchanting interface.  
 Prepare to embark on a cosmic journey through its three celestial tabs, each designed to guide you through the depths of your project documentation and beyond.
 
-1. 🧑‍🚀 Explore Tab: Unveil the Secrets of the Cosmos
+1. 🧑‍🚀 Explore Tab: Unveil the Secrets of the Cosmos  
     This ethereal tab serves as your portal to the wonders of project documentation.  
     In it, ``Venture`` eagerly awaits your inquiries and questions.  
     Discover the vast knowledge it holds or let its "Auto-Pilot" feature autonomously guide you to the precise documentation you seek.
 
-2. 🌟 Cosmos Tab: Forge New Stars in the Galaxy
+2. 🌟 Cosmos Tab: Forge New Stars in the Galaxy  
     In this celestial workshop, you possess the power to shape the very fabric of your cosmos.  
     Add new constellations of knowledge to the cosmic expanse or remove existing ones as you navigate through the possibilities of your documentation universe.
 
-3. 📡 Interlink Tab: Communication Across the Stars
+3. 📡 Interlink Tab: Communication Across the Stars  
     This celestial conduit bridges the gap between you and the support team, ensuring seamless communication amidst the cosmic expanse.  
     Should you encounter enigmatic anomalies or deem a documentation update necessary, harness the power of the Interlink Tab to connect with the support team, who will guide you through the celestial seas of knowledge.
 

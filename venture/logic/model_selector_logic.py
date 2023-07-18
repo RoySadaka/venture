@@ -15,19 +15,19 @@ def get_model_based_on_token_count(token_count:int):
 
 def get_model_name_for_function_name_extract(metadata:Metadata, summary_token_count:int) -> str:
     token_count = metadata.token_counts.cosmos_function_name_all_prompt_count + summary_token_count
-    token_count = token_count * Config.TOKEN_COUNT_MULTIPLIER + Config.FUNCTION_NAME_RESERVED_RESPONSE_TOKEN_COUNT
+    token_count = token_count + Config.FUNCTION_NAME_RESERVED_RESPONSE_TOKEN_COUNT
     model_name = get_model_based_on_token_count(token_count)
     return model_name
 
 def get_model_name_for_ownership_extract(metadata:Metadata, processed_doc_token_count:int) -> str:
     token_count = metadata.token_counts.cosmos_system_ownership_all_prompt_count + processed_doc_token_count
-    token_count = token_count * Config.TOKEN_COUNT_MULTIPLIER + Config.OWNERSHIP_RESERVED_RESPONSE_TOKEN_COUNT
+    token_count = token_count + Config.OWNERSHIP_RESERVED_RESPONSE_TOKEN_COUNT
     model_name = get_model_based_on_token_count(token_count)
     return model_name
 
 def get_model_name_for_summary_extract(metadata:Metadata, processed_doc_token_count:int) -> str:
     token_count = metadata.token_counts.cosmos_system_summary_count + processed_doc_token_count
-    token_count = token_count * Config.TOKEN_COUNT_MULTIPLIER + Config.SUMMARY_RESERVED_RESPONSE_TOKEN_COUNT
+    token_count = token_count + Config.SUMMARY_RESERVED_RESPONSE_TOKEN_COUNT
     model_name = get_model_based_on_token_count(token_count)
     return model_name
 
@@ -36,7 +36,7 @@ def get_model_name_for_retrieval_caller(metadata:Metadata, user_query:str, funct
                     token_count_logic.count_tokens(user_query) + \
                     token_count_logic.count_tokens(Config.EXTRA_ROLE) + \
                     sum(metadata.token_counts.retrieval_function_name_to_count[f['name']] for f in functions)
-    token_count = token_count * Config.TOKEN_COUNT_MULTIPLIER + Config.RESERVED_RESPONSE_TOKEN_COUNT
+    token_count = token_count + Config.RESERVED_RESPONSE_TOKEN_COUNT
     model_name = get_model_based_on_token_count(token_count)
     return model_name
 
@@ -46,7 +46,7 @@ def get_model_name_for_retrieval_verdict(metadata:Metadata, user_message:str) ->
                     token_count_logic.count_tokens(user_message) + \
                     token_count_logic.count_tokens(Config.EXTRA_ROLE)
     
-    token_count = token_count * Config.TOKEN_COUNT_MULTIPLIER + Config.RESERVED_RESPONSE_TOKEN_COUNT
+    token_count = token_count + Config.RESERVED_RESPONSE_TOKEN_COUNT
     model_name = get_model_based_on_token_count(token_count)
     return model_name
 
@@ -58,7 +58,7 @@ def get_model_name_for_llm_response(metadata:Metadata, user_query:str, context_f
                     sum(file_name_to_parsed_doc[file_name].content_token_count for file_name in context_file_names_to_use) + \
                     token_count_logic.count_tokens(user_query)
     
-    token_count = token_count * Config.TOKEN_COUNT_MULTIPLIER + Config.RESERVED_RESPONSE_TOKEN_COUNT
+    token_count = token_count + Config.RESERVED_RESPONSE_TOKEN_COUNT
     model_name = get_model_based_on_token_count(token_count)
     return model_name
 
