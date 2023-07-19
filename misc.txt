@@ -12,5 +12,6 @@ Steps:
     >> twine check dist/*
     Publish PyPi package to test:
     >> twine upload -r testpypi dist/*
+    Test, (pip install -i https://test.pypi.org/simple/ venture-ai)
     After test, publish to PyPi
     >> twine upload dist/*

@@ -4,3 +4,4 @@ class FileType(Enum):
     DOCX = 'docx'
     PDF = 'pdf'
     TXT = 'txt'
+    MD = 'md'

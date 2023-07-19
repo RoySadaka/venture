@@ -93,7 +93,8 @@ def caller(metadata:Metadata,
             outputs.append(PackageOutput(function_name=system_retrieval_verdict.RESPONSE_WITHOUT_FUNCTION_NAME_HANDLER['name'],
                                          function_description=system_retrieval_verdict.RESPONSE_WITHOUT_FUNCTION_NAME_HANDLER['description'],
                                          response_text=output.assistant_message_content))
-        
+            continue
+
         # HANDLE FUNCTIONS
         function_name = output.assistant_function_name
         if function_name in system_retrieval_caller.NON_TEMPLATE_HANDLER_NAMES:
@@ -163,6 +164,23 @@ def parse_output(metadata:Metadata, chosen_output:PackageOutput, picked_doc_file
     return RetrievalOutput(file_names_to_use=file_names_to_use,
                            response_text=chosen_output.response_text)
 
+def fixer(metadata:Metadata, packages:List[PackageInput], retrieval_output:RetrievalOutput) -> RetrievalOutput:
+    all_function_names = set()
+    for p in packages:
+        for fn in p.function_names:
+            all_function_names.add(fn)
+    if not retrieval_output.file_names_to_use:
+        if retrieval_output.response_text in all_function_names:
+            # SOMETIMES CHATGPT PUTS THE FUNCTION NAME IN THE SYSTEM MESSAGE
+            return RetrievalOutput(file_names_to_use={metadata.function_name_to_file_name[retrieval_output.response_text]}, 
+                                    response_text='')
+
+        # IN CASE NO FILE WAS FOUND, VENTURE WILL ADD A DISCLAIMER FOR THE RAW OUTPUT
+        disclaimer = """⚠️ Venture was unable to identify a specific document related to your query.\nThe following text is the unprocessed output:\n\n"""
+        return RetrievalOutput(file_names_to_use={}, 
+                                    response_text=f'{disclaimer}{retrieval_output.response_text}')
+
+    return retrieval_output
 
 def retrieve(metadata:Metadata, 
              function_name_to_file_name:dict[str,str], 
@@ -177,5 +195,7 @@ def retrieve(metadata:Metadata,
     # print(f'-----chosen_output\n{chosen_output}')
     retrieval_output = parse_output(metadata, chosen_output, picked_doc_file_names)
     # print(f'-----retrieval_output\n{retrieval_output}')
-    return retrieval_output
+    fixed_retrieval_output = fixer(metadata, packages, retrieval_output)
+    # print(f'-----fixed_retrieval_output\n{fixed_retrieval_output}')
+    return fixed_retrieval_output
 

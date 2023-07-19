@@ -2,6 +2,12 @@ Change Log
 ==========
 
 
+0.9.9 (19/07/2023)
+-----------------
+- Markdown (md) files to be loaded as plain text
+- Fixing edge case in ChatGPT output, where function name is in the assistant message
+- Fixing result when no project owner found
+
 0.9.8 (18/07/2023)
 -----------------
 - Changes to token counting, still unknown how OpenAI are counting function call tokens, for now adding extra 11 tokens to each function call seems to be stable.

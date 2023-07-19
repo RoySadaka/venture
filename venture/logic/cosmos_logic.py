@@ -1,14 +1,14 @@
-from venture.objects.file_type import FileType
+import venture.logic.model_selector_logic as model_selector_logic
+import venture.logic.function_name_logic as function_name_logic
 import venture.prompts.system_ownership as system_ownership
+import venture.logic.token_count_logic as token_count_logic
 import venture.prompts.system_summary as system_summary
 from venture.objects.parse_result import ParseResult
-import venture.logic.model_selector_logic as model_selector_logic
-from venture.objects.parsed_doc import ParsedDoc
-import venture.logic.token_count_logic as token_count_logic
-import venture.casual_utils as casual_utils 
+import venture.logic.loaders_logic as loaders_logic
 import venture.logic.openai_logic as openai_logic
-import venture.logic.loaders_logic as lolo
-import venture.logic.function_name_logic as fnlo
+from venture.objects.parsed_doc import ParsedDoc
+from venture.objects.file_type import FileType
+import venture.casual_utils as casual_utils 
 from venture.metadata import Metadata
 from typing import Dict, Set, Tuple
 from venture.config import Config
@@ -34,6 +34,9 @@ def index_cosmos__read_file(file_path:str, file_type:FileType):
             casual_utils.delete_file(casual_utils.get_index_path()+temp_file_name)
             return text
     elif file_type == FileType.TXT.value:
+        text = casual_utils.read_text_from_file(file_path)
+        return text
+    elif file_type == FileType.MD.value:
         text = casual_utils.read_text_from_file(file_path)
         return text
     else:
@@ -74,7 +77,11 @@ def index_cosmos__extract_contact_details_from_doc(metadata:Metadata, doc_as_str
         return ''
 
     cd = output.assistant_function_parsed_arguments[system_ownership.EXPLICIT_CONTACTS_DETAILS]
+    cd = set(cd) - Config.IRRELEVANT_PROJECT_OWNERS
+    if len(cd) == 0:
+        return ''
     return cd[0] if isinstance(cd, list) and len(cd) == 1 else str(cd)
+
 
 def index_cosmos_parse_delta(metadata:Metadata, file_name_add_to_file_type: Dict[str,FileType]) -> Dict[str, ParseResult]:
     file_name_to_parsed_doc = metadata.file_name_to_parsed_doc
@@ -107,7 +114,7 @@ def index_cosmos_parse_delta(metadata:Metadata, file_name_add_to_file_type: Dict
         try:
             summary = index_cosmos__extract_summary_from_doc(metadata, file_name, processed_doc, processed_doc_token_count)
             contact_details = index_cosmos__extract_contact_details_from_doc(metadata, processed_doc, processed_doc_token_count)
-            function_name = fnlo.extract_openai_function_name(metadata, file_name, summary)
+            function_name = function_name_logic.extract_openai_function_name(metadata, file_name, summary)
         except:
             file_name_to_result[file_name] = ParseResult.ERROR
             continue
@@ -186,7 +193,7 @@ def index_cosmos(metadata:Metadata, file_paths_to_upload, file_names_to_delete):
         file_name_to_result = index_cosmos_parse_delta(metadata, file_name_add_to_file_type)
         for skipped_file_name in skipped:
             file_name_to_result[skipped_file_name] = ParseResult.UNSUPPORTED_FORMAT
-        lolo.load_initial_metadata(metadata)
+        loaders_logic.load_initial_metadata(metadata)
         for file_name in deleted:
             file_name_to_result[file_name] = ParseResult.SUCCESS_DELETE
 

@@ -85,8 +85,9 @@ def get_file_name_and_owner_by_file_name(metadata:Metadata, file_name:str) ->str
     if file_name not in metadata.file_name_to_parsed_doc:
         return file_name
     contact_details = metadata.file_name_to_parsed_doc[file_name].contact_details
-    if contact_details is not None:
+    if contact_details:
         return f'🌟 {file_name}  |  🧑‍✈️ {contact_details}'
+    return f'🌟 {file_name}'
 
 
 @casual_utils.suppress_errors(fallback_value=LLMOutput(response_text=Config.ERROR_RESPONSE))

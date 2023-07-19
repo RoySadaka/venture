@@ -15,6 +15,7 @@ class Config:
     TOKENIZER_NAME = 'cl100k_base'
     OPEN_AI_FUNCTION_MAX_LENGTH = 64
     OPEN_AI_FUNCTION_TEMPLATE_SUFFIX = '_handler'
+    IRRELEVANT_PROJECT_OWNERS = {'owner', 'leader', 'project lead', 'contact person'}
 
     CAPTAIN_EMAIL = ''
     EXTRA_ROLE = ''
